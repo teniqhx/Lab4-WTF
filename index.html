@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Convert Case</title>
+  </head>
+  <body>
+    <h1>Convert Case</h1>
+    <label for="input-text">Input Text:</label>
+    <input type="text" id="input-text" /><br />
+    <button onclick="convert()">Convert</button>
+    <p id="output-text"></p>
+    <script>
+      function convert() {
+        const inputText = document.getElementById('input-text').value;
+        fetch('/api/convertCase', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ inputText: inputText }),
+        })
+          .then((response) => {
+            if (response.ok) {
+              return response.text();
+            } else {
+              throw new Error('Network response was not ok');
+            }
+          })
+          .then((outputText) => {
+            document.getElementById('output-text').textContent = outputText;
+          })
+          .catch((error) => {
+            console.error('There was a problem with the fetch operation:', error);
+          });
+      }
+    </script>
+  </body>
+</html>
